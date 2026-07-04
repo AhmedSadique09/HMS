@@ -1,1 +1,1 @@
-export { default, metadata } from "./LandingPage/page";
+export { default } from "./LandingPage/page";
