@@ -1,17 +1,12 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
 import { Inter } from "next/font/google";
 import Button from "@/components/elements/Button";
-import Select from "@/components/elements/Select";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-
-export const metadata: Metadata = {
-  title: "Shadiyana: Your Go-To Wedding Planning Hub in Pakistan",
-  description:
-    "Plan your Shadi in 3 minutes. Discover wedding venues, photographers, bridal makeup, decor, catering and more across Pakistan. Design demo built from the elements library.",
-};
 
 /* Brand tokens (exact from shadiyana.pk) --------------------------- */
 /* pink #d73853 · magenta band #d7385e · heading navy #132743        */
@@ -75,71 +70,286 @@ function StoreBadge({ icon, top, bottom }: { icon: string; top: string; bottom: 
 /* ================================================================== */
 /* Hero — "Plan your Shadi in 3 minutes"                               */
 /* ================================================================== */
-const SERVICE_OPTIONS = [
-  { value: "venues", label: "Wedding Venues" },
-  { value: "photographers", label: "Photographers" },
-  { value: "makeup", label: "Bridal Makeup" },
-  { value: "decor", label: "Decor" },
-  { value: "catering", label: "Catering" },
-];
-const CITY_OPTIONS = [
-  { value: "lahore", label: "Lahore" },
-  { value: "karachi", label: "Karachi" },
-  { value: "islamabad", label: "Islamabad" },
-  { value: "rawalpindi", label: "Rawalpindi" },
-];
 const POPULAR_SEARCHES = ["Wedding Venues Lahore", "Wedding Venues Islamabad", "Makeup Artists Lahore"];
 
+/* Service options (same set as the header Services menu) */
+const SERVICE_MENU = [
+  { label: "Photographers", image: "/venues/Weedingcuuple.png", tagline: "Timeless moments captured." },
+  { label: "Bridal Makeup", image: "/venues/bridal%20makeup.png", tagline: "Flawless bridal looks." },
+  { label: "Decoration", image: "/venues/Decorators.png", tagline: "Stunning event styling." },
+  { label: "Henna Artist", image: "/venues/mhendiartist.png", tagline: "Intricate mehndi artistry." },
+  { label: "Catering", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=120&h=120&fit=crop&q=80", tagline: "Exquisite wedding cuisine." },
+  { label: "Wedding Invitations", image: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=120&h=120&fit=crop&q=80", tagline: "Elegant custom stationery." },
+  { label: "Car Rental", image: "/venues/carrental.png", tagline: "Luxury wedding rides." },
+  { label: "Corporate Events", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=120&h=120&fit=crop&q=80", tagline: "Seamless corporate functions." },
+  { label: "Singer / Bands", image: "/venues/musicians.png", tagline: "Live musical performances." },
+  { label: "Choreographers", image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=120&h=120&fit=crop&q=80", tagline: "Choreographed dance sets." },
+  { label: "Lighting & Ambiance", image: "/venues/lightning.png", tagline: "Immersive lighting design." },
+];
+
+/* City menu — region (with landmark image) → its cities (hover to reveal) */
+const CITY_MENU = [
+  {
+    region: "Islamabad",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Ali_Mujtaba_WLM2017_FAISAL_MOSQUE_019.jpg/330px-Ali_Mujtaba_WLM2017_FAISAL_MOSQUE_019.jpg",
+    cities: ["Islamabad", "Bahria Town", "DHA Islamabad"],
+  },
+  {
+    region: "Punjab",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Badshahi_Mosque_front_picture.jpg/330px-Badshahi_Mosque_front_picture.jpg",
+    cities: ["Lahore", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala", "Sialkot"],
+  },
+  {
+    region: "Sindh",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PK_Karachi_asv2020-02_img52_Mazar-e-Quaid.jpg/330px-PK_Karachi_asv2020-02_img52_Mazar-e-Quaid.jpg",
+    cities: ["Karachi", "Hyderabad", "Sukkur", "Larkana"],
+  },
+  {
+    region: "Balochistan",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Quaid_e_Azam_Residency_Ziarat.jpg/330px-Quaid_e_Azam_Residency_Ziarat.jpg",
+    cities: ["Quetta", "Gwadar", "Turbat"],
+  },
+  {
+    region: "Khyber Pakhtunkhwa",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Islamia_College_Peshawar_%28Public_Sector_University%29%2C_Khyber_Pakhtunkhwa%2C_Pakistan_cropped.jpg/330px-Islamia_College_Peshawar_%28Public_Sector_University%29%2C_Khyber_Pakhtunkhwa%2C_Pakistan_cropped.jpg",
+    cities: ["Peshawar", "Abbottabad", "Mardan", "Swat"],
+  },
+  {
+    region: "Gilgit-Baltistan",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Hunza_Valley_HDR.jpg/330px-Hunza_Valley_HDR.jpg",
+    cities: ["Gilgit", "Skardu", "Hunza"],
+  },
+  {
+    region: "Azad Kashmir",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Neelum_Valley%2C_Azad_Jammu_%26_Kashmir%2C_Pakistan.jpg/330px-Neelum_Valley%2C_Azad_Jammu_%26_Kashmir%2C_Pakistan.jpg",
+    cities: ["Muzaffarabad", "Mirpur", "Rawalakot"],
+  },
+];
+
 function Hero() {
+  const [activeTab, setActiveTab] = useState<"service" | "name">("service");
+  const [isServiceOpen, setIsServiceOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [isCityOpen, setIsCityOpen] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [hoveredRegion, setHoveredRegion] = useState<number | null>(null);
+
   return (
-    <section className="relative overflow-hidden bg-[#ffe9e9] py-[60px]">
+/* ================================================================== */
+/* Plan Shadi of your dreams                                        */
+/* ================================================================== */
+
+    <section className="relative z-20 bg-[#ffe9e9] py-15">
       {/* Decorative corner motifs (placeholders for proprietary hero art) */}
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 size-28 rounded-tr-[3rem] bg-[#d73853]/20" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-4 hidden items-end md:flex">
-        <svg viewBox="0 0 200 220" className="h-56 w-auto opacity-95">
-          {/* bride */}
-          <path fill="#d73853" d="M120 40a14 14 0 1 0 0 28 14 14 0 0 0 0-28Zm-4 30c-16 0-26 14-26 40l-8 100h56l14-100c0-26-14-40-36-40Z" />
-          {/* groom */}
-          <path fill="#132743" d="M78 44a13 13 0 1 0 0 26 13 13 0 0 0 0-26Zm-2 28c-14 0-22 10-22 30v90h44V102c0-20-8-30-22-30Z" />
-          <path fill="#d73853" d="M100 150c8 0 8-10 0-16-8 6-8 16 0 16Z" />
-        </svg>
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-1 hidden items-end md:flex">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/coupledance.png" alt="" className="h-60 w-auto object-contain" />
       </div>
 
-      <div className="relative mx-auto max-w-[1000px] px-4 sm:px-6">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <h1 className="mb-6 text-center text-[20px] font-semibold leading-tight text-[#132743] sm:text-[30px]">
-          Plan your <span className="text-[#d73853]">Shadi</span> in 3 minutes
+          Plan the <span className="text-[#d73853]">Shadi</span> of your dreams
         </h1>
 
         {/* Search card */}
-        <div className="mx-auto max-w-lg rounded-2xl bg-white p-4 shadow-xl shadow-rose-900/10 sm:p-5">
+        <div className="mx-auto w-full max-w-6xl rounded-3xl bg-white px-6 py-6 shadow-md sm:px-8">
           {/* Tabs */}
-          <div className="mb-4 flex items-center justify-center gap-6 text-sm font-medium">
-            <span className="border-b-2 border-[#d73853] pb-1.5 text-[#d73853]">Service &amp; City</span>
-            <span className="pb-1.5 text-zinc-400">Search By Name</span>
+          <div className="mb-5 flex gap-6">
+            <button
+              onClick={() => setActiveTab("service")}
+              className="relative cursor-pointer pb-2 text-[15px]"
+              style={{
+                color: activeTab === "service" ? "#1e2d5a" : "#9ca3af",
+                fontWeight: activeTab === "service" ? 700 : 400,
+              }}
+            >
+              Service &amp; City
+              {activeTab === "service" && (
+                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#e0436a" }} />
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("name")}
+              className="relative cursor-pointer pb-2 text-[15px]"
+              style={{
+                color: activeTab === "name" ? "#1e2d5a" : "#9ca3af",
+                fontWeight: activeTab === "name" ? 700 : 400,
+              }}
+            >
+              Search By Name
+              {activeTab === "name" && (
+                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#e0436a" }} />
+              )}
+            </button>
           </div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto]">
-            <Select aria-label="Select Service" options={SERVICE_OPTIONS} placeholder="Select Service" />
-            <Select aria-label="Select City" options={CITY_OPTIONS} placeholder="Select City" />
-            <Button rounded="lg" className={`justify-center ${BTN_PRIMARY}`}>
-              <Icon path={ICONS.search} className="size-4" />
-              Search
-            </Button>
+
+          {/* Search Bar */}
+          <div className="relative flex items-center rounded-full border border-gray-200" style={{ height: "52px" }}>
+            {activeTab === "service" ? (
+              <>
+                {/* Select Service (opens services popup) */}
+                <div className="relative flex h-full flex-1 items-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsServiceOpen((o) => !o)}
+                    className="flex h-full w-full items-center justify-between px-5 text-left"
+                  >
+                    <span className={`text-[14px] ${selectedService ? "font-medium text-[#132743]" : "text-gray-400"}`}>
+                      {selectedService ?? "Select Service"}
+                    </span>
+                  </button>
+
+                  {isServiceOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsServiceOpen(false)} />
+                      <div className="absolute left-0 top-full z-50 mt-3 w-155 rounded-2xl border border-zinc-100 bg-white p-3 shadow-xl">
+                        <div className="grid grid-cols-2 gap-1">
+                          {SERVICE_MENU.map((s) => (
+                            <button
+                              key={s.label}
+                              type="button"
+                              onClick={() => {
+                                setSelectedService(s.label);
+                                setIsServiceOpen(false);
+                              }}
+                              className="group/item flex items-center gap-4 rounded-xl p-3 text-left transition-colors hover:bg-zinc-50"
+                            >
+                              <span className="size-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-100">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={s.image} alt={s.label} className="size-full object-cover" />
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="flex w-full items-center gap-1.5 transition-all group-hover/item:justify-between">
+                                  <span className="text-base font-semibold text-[#132743]">{s.label}</span>
+                                  <svg
+                                    viewBox="0 0 10 10"
+                                    fill="none"
+                                    aria-hidden="true"
+                                    className="size-2.5 text-zinc-400 transition-all duration-300 group-hover/item:-rotate-45 group-hover/item:text-[#d73853]"
+                                  >
+                                    <path
+                                      d="M4.99 0.75L8.75 4.75M8.75 4.75L4.99 8.75M8.75 4.75L0.75 4.75"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                  </svg>
+                                </span>
+                                <span className="mt-0.5 block text-sm text-zinc-500">{s.tagline}</span>
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="h-6 w-px bg-gray-200" />
+
+                {/* Select City (region → cities hover popup) */}
+                <div className="relative flex h-full flex-1 items-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsCityOpen((o) => !o)}
+                    className="flex h-full w-full items-center px-5 text-left"
+                  >
+                    <span className={`text-[14px] ${selectedCity ? "font-medium text-[#132743]" : "text-gray-400"}`}>
+                      {selectedCity ?? "Select City"}
+                    </span>
+                  </button>
+
+                  {isCityOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsCityOpen(false)} />
+                      <div
+                        onMouseLeave={() => setHoveredRegion(null)}
+                        className="absolute left-0 top-full z-50 mt-3 flex rounded-2xl border border-zinc-100 bg-white shadow-xl"
+                      >
+                        {/* Left: regions with landmark image */}
+                        <div className="w-72 p-2">
+                          {CITY_MENU.map((r, i) => (
+                            <button
+                              key={r.region}
+                              type="button"
+                              onMouseEnter={() => setHoveredRegion(i)}
+                              className={`flex w-full items-center gap-3 rounded-xl p-2.5 text-left transition-colors ${
+                                hoveredRegion === i ? "bg-zinc-50" : "hover:bg-zinc-50"
+                              }`}
+                            >
+                              <span className="size-9 shrink-0 overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-100">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={r.image} alt={r.region} className="size-full object-cover" />
+                              </span>
+                              <span className="flex-1 text-sm font-medium text-[#132743]">{r.region}</span>
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4 text-zinc-300">
+                                <path d="m9 6 6 6-6 6" />
+                              </svg>
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Right: cities of the hovered region — only while hovering a region */}
+                        {hoveredRegion !== null && (
+                          <div className="w-56 border-l border-zinc-100 p-3">
+                            <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                              {CITY_MENU[hoveredRegion].region}
+                            </p>
+                            <div className="space-y-1">
+                              {CITY_MENU[hoveredRegion].cities.map((c) => (
+                                <button
+                                  key={c}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedCity(c);
+                                    setIsCityOpen(false);
+                                  }}
+                                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-[#132743] transition-colors hover:bg-zinc-50 hover:text-[#d73853]"
+                                >
+                                  {c}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="flex h-full flex-1 items-center px-5">
+                <span className="text-[14px] text-gray-400">Search by business name</span>
+              </div>
+            )}
+
+            {/* Search Button */}
+            <div className="pr-1.5">
+              <button
+                className="flex h-10 cursor-pointer items-center gap-2 rounded-full px-5 text-[14px] text-white"
+                style={{ background: "#e8718e" }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className="size-3.75"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                Search
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Popular searches */}
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-          <span className="text-sm font-medium text-[#132743]">Popular Searches :</span>
-          {POPULAR_SEARCHES.map((s) => (
-            <a
-              key={s}
-              href="#"
-              className="rounded-full bg-white px-3 py-1 text-xs font-medium text-[#d73853] shadow-sm transition hover:bg-[#d73853] hover:text-white"
-            >
-              {s}
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -148,34 +358,52 @@ function Hero() {
 /* ================================================================== */
 /* Find every wedding service                                          */
 /* ================================================================== */
+/* Cards copied 1:1 from shadiyana.pk — exact per-card bg + blob color + images */
 const SERVICES = [
-  { name: "Wedding Venues", icon: ICONS.pin, tint: "bg-[#ffc778]/30", ring: "from-amber-300 to-orange-400" },
-  { name: "Photographers", icon: ICONS.camera, tint: "bg-[#ffe7d3]", ring: "from-rose-300 to-rose-500" },
-  { name: "Bridal Makeup", icon: ICONS.brush, tint: "bg-[#ff1b20]/15", ring: "from-fuchsia-300 to-pink-500" },
-  { name: "Decor", icon: ICONS.sofa, tint: "bg-[#ffdac6]", ring: "from-emerald-300 to-teal-500" },
-  { name: "Catering", icon: ICONS.utensils, tint: "bg-[#ffd3ba]", ring: "from-amber-300 to-orange-500" },
-  { name: "Henna Artists", icon: ICONS.heart, tint: "bg-[#ffdac6]", ring: "from-lime-300 to-emerald-500" },
-  { name: "Car Rental", icon: ICONS.car, tint: "bg-[#ffe7d3]", ring: "from-sky-300 to-blue-500" },
-  { name: "Wedding Stationery", icon: ICONS.envelope, tint: "bg-[#ffc778]/30", ring: "from-violet-300 to-purple-500" },
+  { name: "Wedding Venues", image: "/wedding-service/wedding-venues.webp", bg: "rgba(255, 199, 120, 0.3)", blob: "rgb(254, 245, 230)", href: "#" },
+  { name: "Photographers", image: "/wedding-service/photographers.webp", bg: "rgb(255, 231, 211)", blob: "rgb(255, 241, 229)", href: "#" },
+  { name: "Bridal Makeup", image: "/wedding-service/bridal-makeup.webp", bg: "rgba(255, 27, 32, 0.15)", blob: "rgb(255, 234, 235)", href: "#" },
+  { name: "Decor", image: "/wedding-service/decor.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
+  { name: "Catering", image: "/wedding-service/catering.webp", bg: "rgb(255, 211, 186)", blob: "rgb(255, 228, 214)", href: "#" },
+  { name: "Henna Artists", image: "/wedding-service/henna-artists.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
+  { name: "Car Rental", image: "/wedding-service/car-rental.webp", bg: "rgb(255, 226, 196)", blob: "rgb(255, 238, 220)", href: "#" },
+  { name: "Wedding Stationery", image: "/wedding-service/wedding-stationery.webp", bg: "rgb(255, 210, 204)", blob: "rgb(255, 228, 224)", href: "#" },
 ];
 
 function ServicesRow() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+    <section className="mx-auto max-w-8xl px-4 py-14 sm:px-6">
       <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">
         Find every wedding service
       </h2>
-      <div className="mt-9 flex flex-wrap justify-center gap-4">
-        {SERVICES.map((s) => (
+      <div className="mt-9 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {SERVICES.map((s, i) => (
           <a
             key={s.name}
-            href="#"
-            className={`flex items-center gap-3 rounded-full py-2 pl-2 pr-5 transition hover:-translate-y-0.5 hover:shadow-md ${s.tint}`}
+            href={s.href}
+            style={{ backgroundColor: s.bg }}
+            className={`group relative flex h-20 items-center justify-between overflow-hidden rounded-2xl pl-4 shadow-sm transition-all hover:shadow-md ${i === 5 ? "lg:col-start-2" : ""}`}
           >
-            <span className={`flex size-11 items-center justify-center rounded-full bg-linear-to-br text-white ${s.ring}`}>
-              <Icon path={s.icon} className="size-5" />
+            {/* decorative corner blobs (exact from shadiyana.pk) */}
+            <div
+              aria-hidden="true"
+              style={{ backgroundColor: s.blob }}
+              className="pointer-events-none absolute -left-[45px] -top-[45px] h-16 w-24 rounded-full"
+            />
+            <div
+              aria-hidden="true"
+              style={{ backgroundColor: s.blob }}
+              className="pointer-events-none absolute right-0 top-0 h-16 w-16 rounded-bl-full"
+            />
+            <span className="z-10 max-w-[55%] text-[15px] font-semibold leading-snug text-[#132743]">
+              {s.name}
             </span>
-            <span className="text-sm font-semibold text-[#132743]">{s.name}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={s.image}
+              alt={s.name}
+              className="relative z-10 h-full w-28 shrink-0 object-contain object-right transition-transform group-hover:scale-105"
+            />
           </a>
         ))}
       </div>
@@ -241,7 +469,7 @@ const STATS = [
 function WhyShadiyana() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Why Shadiyana?</h2>
+      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Why Bandhan?</h2>
       <div className="mt-9 rounded-3xl bg-[#d73853]/[0.06] px-6 py-10">
         <div className="grid grid-cols-2 items-center gap-8 lg:grid-cols-4 lg:divide-x lg:divide-rose-200">
           {STATS.map((s) => (
@@ -268,7 +496,7 @@ function AppSection() {
       <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-[#ffe9e9] px-6 py-10 sm:px-10 lg:grid-cols-2">
         <div>
           <h2 className="text-2xl font-bold text-[#132743] sm:text-3xl">
-            Get the <span className="text-[#d73853]">Shadiyana</span> app
+            Get the <span className="text-[#d73853]">Bandhan</span> app
           </h2>
           <p className="mt-3 max-w-md text-zinc-600">
             Search, compare and book wedding services faster in one app.
@@ -311,9 +539,9 @@ function TestimonialSection() {
         <div>
           <p className="text-lg font-semibold text-[#132743]">Fatima Waseem</p>
           <p className="mt-3 max-w-xl text-zinc-600">
-            &ldquo;I couldn&apos;t have planned my wedding without Shadiyana. The team was so
+            &ldquo;I couldn&apos;t have planned my wedding without Bandhan. The team was so
             cooperative with every little question, right up to the big day. I loved them —
-            I&apos;d choose Shadiyana as my planner a thousand times over.&rdquo;
+            I&apos;d choose Bandhan as my planner a thousand times over.&rdquo;
             <span className="ml-1 text-[#d73853]">
               <Icon path={ICONS.heart} className="inline size-4" />{" "}
               <Icon path={ICONS.heart} className="inline size-4" />
@@ -367,28 +595,6 @@ function BlogsSection() {
             </div>
           </a>
         ))}
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================== */
-/* Join our team                                                       */
-/* ================================================================== */
-function JoinTeam() {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#1b2436] to-[#0b0e13] px-6 py-16 text-center">
-        <div aria-hidden="true" className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,')] opacity-20" />
-        <h2 className="text-3xl font-bold text-white">Join our team now</h2>
-        <p className="mx-auto mt-3 max-w-xl text-white/80">
-          Join a workplace that values creativity, collaboration, and the joy of celebration.
-        </p>
-        <div className="mt-7 flex justify-center">
-          <Button variant="outline" size="lg" rounded="full" className="!border-white !text-white hover:!bg-white hover:!text-[#132743]">
-            View Job Opportunities
-          </Button>
-        </div>
       </div>
     </section>
   );
@@ -472,7 +678,6 @@ export default function ShadiyanaLanding() {
       <AppSection />
       <TestimonialSection />
       <BlogsSection />
-      <JoinTeam />
       <VendorBand />
       <CityServices />
       <Footer />
