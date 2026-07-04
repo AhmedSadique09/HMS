@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --container-8xl: 88rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Shimmer sweep used by the Placeholder "wave" animation. */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Custom range slider (thumb + track). Track fill is set inline per value. */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.5rem;
+  border-radius: 9999px;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 9999px;
+  background: white;
+  border: 2px solid rgb(37 99 235);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 9999px;
+  background: white;
+  border: 2px solid rgb(37 99 235);
+  cursor: pointer;
+}
+.slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hide the scrollbar but keep scrolling. */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Thin, rounded, subtle scrollbar. */
+.scrollbar-modern {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(212 212 216) transparent;
+}
+.scrollbar-modern::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-modern::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-modern::-webkit-scrollbar-thumb {
+  background-color: rgb(212 212 216);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scrollbar-modern::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(161 161 170);
+}
+@media (prefers-color-scheme: dark) {
+  .scrollbar-modern {
+    scrollbar-color: rgb(63 63 70) transparent;
+  }
+  .scrollbar-modern::-webkit-scrollbar-thumb {
+    background-color: rgb(63 63 70);
+  }
+  .scrollbar-modern::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(82 82 91);
+  }
+}
+
+/* Toast slide / fade in. */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Growing spinner (Bootstrap's spinner-grow). */
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
