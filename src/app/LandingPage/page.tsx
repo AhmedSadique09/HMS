@@ -358,34 +358,52 @@ function Hero() {
 /* ================================================================== */
 /* Find every wedding service                                          */
 /* ================================================================== */
+/* Cards copied 1:1 from shadiyana.pk — exact per-card bg + blob color + images */
 const SERVICES = [
-  { name: "Wedding Venues", icon: ICONS.pin, tint: "bg-[#ffc778]/30", ring: "from-amber-300 to-orange-400" },
-  { name: "Photographers", icon: ICONS.camera, tint: "bg-[#ffe7d3]", ring: "from-rose-300 to-rose-500" },
-  { name: "Bridal Makeup", icon: ICONS.brush, tint: "bg-[#ff1b20]/15", ring: "from-fuchsia-300 to-pink-500" },
-  { name: "Decor", icon: ICONS.sofa, tint: "bg-[#ffdac6]", ring: "from-emerald-300 to-teal-500" },
-  { name: "Catering", icon: ICONS.utensils, tint: "bg-[#ffd3ba]", ring: "from-amber-300 to-orange-500" },
-  { name: "Henna Artists", icon: ICONS.heart, tint: "bg-[#ffdac6]", ring: "from-lime-300 to-emerald-500" },
-  { name: "Car Rental", icon: ICONS.car, tint: "bg-[#ffe7d3]", ring: "from-sky-300 to-blue-500" },
-  { name: "Wedding Stationery", icon: ICONS.envelope, tint: "bg-[#ffc778]/30", ring: "from-violet-300 to-purple-500" },
+  { name: "Wedding Venues", image: "/wedding-service/wedding-venues.webp", bg: "rgba(255, 199, 120, 0.3)", blob: "rgb(254, 245, 230)", href: "#" },
+  { name: "Photographers", image: "/wedding-service/photographers.webp", bg: "rgb(255, 231, 211)", blob: "rgb(255, 241, 229)", href: "#" },
+  { name: "Bridal Makeup", image: "/wedding-service/bridal-makeup.webp", bg: "rgba(255, 27, 32, 0.15)", blob: "rgb(255, 234, 235)", href: "#" },
+  { name: "Decor", image: "/wedding-service/decor.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
+  { name: "Catering", image: "/wedding-service/catering.webp", bg: "rgb(255, 211, 186)", blob: "rgb(255, 228, 214)", href: "#" },
+  { name: "Henna Artists", image: "/wedding-service/henna-artists.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
+  { name: "Car Rental", image: "/wedding-service/car-rental.webp", bg: "rgb(255, 226, 196)", blob: "rgb(255, 238, 220)", href: "#" },
+  { name: "Wedding Stationery", image: "/wedding-service/wedding-stationery.webp", bg: "rgb(255, 210, 204)", blob: "rgb(255, 228, 224)", href: "#" },
 ];
 
 function ServicesRow() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+    <section className="mx-auto max-w-8xl px-4 py-14 sm:px-6">
       <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">
         Find every wedding service
       </h2>
-      <div className="mt-9 flex flex-wrap justify-center gap-4">
-        {SERVICES.map((s) => (
+      <div className="mt-9 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {SERVICES.map((s, i) => (
           <a
             key={s.name}
-            href="#"
-            className={`flex items-center gap-3 rounded-full py-2 pl-2 pr-5 transition hover:-translate-y-0.5 hover:shadow-md ${s.tint}`}
+            href={s.href}
+            style={{ backgroundColor: s.bg }}
+            className={`group relative flex h-20 items-center justify-between overflow-hidden rounded-2xl pl-4 shadow-sm transition-all hover:shadow-md ${i === 5 ? "lg:col-start-2" : ""}`}
           >
-            <span className={`flex size-11 items-center justify-center rounded-full bg-linear-to-br text-white ${s.ring}`}>
-              <Icon path={s.icon} className="size-5" />
+            {/* decorative corner blobs (exact from shadiyana.pk) */}
+            <div
+              aria-hidden="true"
+              style={{ backgroundColor: s.blob }}
+              className="pointer-events-none absolute -left-[45px] -top-[45px] h-16 w-24 rounded-full"
+            />
+            <div
+              aria-hidden="true"
+              style={{ backgroundColor: s.blob }}
+              className="pointer-events-none absolute right-0 top-0 h-16 w-16 rounded-bl-full"
+            />
+            <span className="z-10 max-w-[55%] text-[15px] font-semibold leading-snug text-[#132743]">
+              {s.name}
             </span>
-            <span className="text-sm font-semibold text-[#132743]">{s.name}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={s.image}
+              alt={s.name}
+              className="relative z-10 h-full w-28 shrink-0 object-contain object-right transition-transform group-hover:scale-105"
+            />
           </a>
         ))}
       </div>
@@ -451,7 +469,7 @@ const STATS = [
 function WhyShadiyana() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Why Shadiyana?</h2>
+      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Why Bandhan?</h2>
       <div className="mt-9 rounded-3xl bg-[#d73853]/[0.06] px-6 py-10">
         <div className="grid grid-cols-2 items-center gap-8 lg:grid-cols-4 lg:divide-x lg:divide-rose-200">
           {STATS.map((s) => (
@@ -478,7 +496,7 @@ function AppSection() {
       <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-[#ffe9e9] px-6 py-10 sm:px-10 lg:grid-cols-2">
         <div>
           <h2 className="text-2xl font-bold text-[#132743] sm:text-3xl">
-            Get the <span className="text-[#d73853]">Shadiyana</span> app
+            Get the <span className="text-[#d73853]">Bandhan</span> app
           </h2>
           <p className="mt-3 max-w-md text-zinc-600">
             Search, compare and book wedding services faster in one app.
@@ -521,9 +539,9 @@ function TestimonialSection() {
         <div>
           <p className="text-lg font-semibold text-[#132743]">Fatima Waseem</p>
           <p className="mt-3 max-w-xl text-zinc-600">
-            &ldquo;I couldn&apos;t have planned my wedding without Shadiyana. The team was so
+            &ldquo;I couldn&apos;t have planned my wedding without Bandhan. The team was so
             cooperative with every little question, right up to the big day. I loved them —
-            I&apos;d choose Shadiyana as my planner a thousand times over.&rdquo;
+            I&apos;d choose Bandhan as my planner a thousand times over.&rdquo;
             <span className="ml-1 text-[#d73853]">
               <Icon path={ICONS.heart} className="inline size-4" />{" "}
               <Icon path={ICONS.heart} className="inline size-4" />
