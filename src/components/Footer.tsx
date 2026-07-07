@@ -50,7 +50,7 @@ export default function Footer() {
       <div className="mx-auto max-w-8xl px-4 pb-6 pt-16 sm:px-6">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-16">
           {/* Newsletter + feedback card */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
+          <div className="rounded-3xl border border-white/10 bg-white/3 p-6 md:p-8">
             <h3 className="text-xl font-bold text-white">Stay ahead of the curve</h3>
             <p className="mt-3 text-sm leading-relaxed text-[#94a3b8]">
               Join 10,000+ couples planning their dream wedding with Bandhan insights.
@@ -90,7 +90,7 @@ export default function Footer() {
 
           {/* Link columns */}
           {FOOTER_COLUMNS.map((col) => (
-            <div key={col.title} className="lg:min-w-[160px]">
+            <div key={col.title} className="lg:min-w-40">
               <p className="text-xs font-bold uppercase tracking-widest text-[#d6334a]">{col.title}</p>
               <ul className="mt-5 space-y-3.5">
                 {col.links.map((link) => (
