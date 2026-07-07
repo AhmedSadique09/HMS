@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Inter } from "next/font/google";
 import Button from "@/components/elements/Button";
 import Header from "@/components/Header";
@@ -52,6 +52,7 @@ const ICONS = {
   car: "M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v4h-2a2 2 0 1 1-4 0H9a2 2 0 1 1-4 0H3v-4a2 2 0 0 1 2-2Zm2.1 0h9.8l-1-3H8.1l-1 3Z",
   envelope:
     "M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm2.4-.2 6.6 4.7 6.6-4.7A.98.98 0 0 0 18 5H6c-.22 0-.43.07-.6.2Z",
+  tag: "M2 11.6V4a2 2 0 0 1 2-2h7.6a2 2 0 0 1 1.4.6l8.4 8.4a2 2 0 0 1 0 2.8l-7.6 7.6a2 2 0 0 1-2.8 0L2.6 13a2 2 0 0 1-.6-1.4ZM7 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z",
 };
 
 /* App-store download badge (Google Play / App Store). */
@@ -126,6 +127,10 @@ const CITY_MENU = [
   },
 ];
 
+/* Full-bleed hero background (wedding scene). */
+const HERO_IMG =
+  "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80";
+
 function Hero() {
   const [activeTab, setActiveTab] = useState<"service" | "name">("service");
   const [isServiceOpen, setIsServiceOpen] = useState(false);
@@ -139,53 +144,59 @@ function Hero() {
 /* Plan Shadi of your dreams                                        */
 /* ================================================================== */
 
-    <section className="relative z-20 bg-[#ffe9e9] py-15">
-      {/* Decorative corner motifs (placeholders for proprietary hero art) */}
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 size-28 rounded-tr-[3rem] bg-[#d73853]/20" />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-1 hidden items-end md:flex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/coupledance.png" alt="" className="h-60 w-auto object-contain" />
+    <section className="relative z-30 flex min-h-dvh items-center justify-center">
+      {/* Full-bleed background */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: `url('${HERO_IMG}')` }}
+        />
+        {/* Brand-tinted overlay for text contrast */}
+        <div className="absolute inset-0 bg-linear-to-b from-[#132743]/75 via-[#132743]/45 to-[#132743]/90" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <h1 className="mb-6 text-center text-[20px] font-semibold leading-tight text-[#132743] sm:text-[30px]">
-          Plan the <span className="text-[#d73853]">Shadi</span> of your dreams
+      <div className="relative z-20 w-full max-w-5xl px-4 py-20 text-center sm:px-6">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-[#ff8fa3] sm:text-sm">
+          Bandhan Weddings
+        </p>
+        <h1 className="mx-auto mb-9 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight text-white drop-shadow-lg sm:text-6xl">
+          Plan the <span className="italic text-[#ff8fa3]">Shadi</span> of your dreams
         </h1>
 
-        {/* Search card */}
-        <div className="mx-auto w-full max-w-6xl rounded-3xl bg-white px-6 py-6 shadow-md sm:px-8">
+        {/* Glass search panel */}
+        <div className="mx-auto w-full max-w-4xl rounded-4xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-xl sm:p-5">
           {/* Tabs */}
-          <div className="mb-5 flex gap-6">
+          <div className="mb-4 flex justify-center gap-8">
             <button
               onClick={() => setActiveTab("service")}
               className="relative cursor-pointer pb-2 text-[15px]"
               style={{
-                color: activeTab === "service" ? "#1e2d5a" : "#9ca3af",
+                color: activeTab === "service" ? "#ffffff" : "rgba(255,255,255,0.6)",
                 fontWeight: activeTab === "service" ? 700 : 400,
               }}
             >
               Service &amp; City
               {activeTab === "service" && (
-                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#e0436a" }} />
+                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#ff8fa3" }} />
               )}
             </button>
             <button
               onClick={() => setActiveTab("name")}
               className="relative cursor-pointer pb-2 text-[15px]"
               style={{
-                color: activeTab === "name" ? "#1e2d5a" : "#9ca3af",
+                color: activeTab === "name" ? "#ffffff" : "rgba(255,255,255,0.6)",
                 fontWeight: activeTab === "name" ? 700 : 400,
               }}
             >
               Search By Name
               {activeTab === "name" && (
-                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#e0436a" }} />
+                <span className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full" style={{ background: "#ff8fa3" }} />
               )}
             </button>
           </div>
 
           {/* Search Bar */}
-          <div className="relative flex items-center rounded-full border border-gray-200" style={{ height: "52px" }}>
+          <div className="relative flex items-center rounded-full border border-white/40 bg-white" style={{ height: "56px" }}>
             {activeTab === "service" ? (
               <>
                 {/* Select Service (opens services popup) */}
@@ -328,8 +339,8 @@ function Hero() {
             {/* Search Button */}
             <div className="pr-1.5">
               <button
-                className="flex h-10 cursor-pointer items-center gap-2 rounded-full px-5 text-[14px] text-white"
-                style={{ background: "#e8718e" }}
+                className="flex h-11 cursor-pointer items-center gap-2 rounded-full px-6 text-[14px] font-medium text-white transition hover:brightness-110"
+                style={{ background: "#d73853" }}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -358,52 +369,53 @@ function Hero() {
 /* ================================================================== */
 /* Find every wedding service                                          */
 /* ================================================================== */
-/* Cards copied 1:1 from shadiyana.pk — exact per-card bg + blob color + images */
+/* Bento grid — span/large/size drive each tile's footprint and emphasis. */
 const SERVICES = [
-  { name: "Wedding Venues", image: "/wedding-service/wedding-venues.webp", bg: "rgba(255, 199, 120, 0.3)", blob: "rgb(254, 245, 230)", href: "#" },
-  { name: "Photographers", image: "/wedding-service/photographers.webp", bg: "rgb(255, 231, 211)", blob: "rgb(255, 241, 229)", href: "#" },
-  { name: "Bridal Makeup", image: "/wedding-service/bridal-makeup.webp", bg: "rgba(255, 27, 32, 0.15)", blob: "rgb(255, 234, 235)", href: "#" },
-  { name: "Decor", image: "/wedding-service/decor.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
-  { name: "Catering", image: "/wedding-service/catering.webp", bg: "rgb(255, 211, 186)", blob: "rgb(255, 228, 214)", href: "#" },
-  { name: "Henna Artists", image: "/wedding-service/henna-artists.webp", bg: "rgb(255, 218, 198)", blob: "rgb(255, 232, 222)", href: "#" },
-  { name: "Car Rental", image: "/wedding-service/car-rental.webp", bg: "rgb(255, 226, 196)", blob: "rgb(255, 238, 220)", href: "#" },
-  { name: "Wedding Stationery", image: "/wedding-service/wedding-stationery.webp", bg: "rgb(255, 210, 204)", blob: "rgb(255, 228, 224)", href: "#" },
+  { name: "Wedding Venues", subtitle: "Halls, lawns & marquees", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80", span: "col-span-2 row-span-2", large: true, size: "text-2xl md:text-3xl", href: "#" },
+  { name: "Photographers", subtitle: "", image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80", span: "md:col-span-2", large: false, size: "text-xl", href: "#" },
+  { name: "Bridal Makeup", subtitle: "", image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80", span: "", large: false, size: "text-lg", href: "#" },
+  { name: "Decor", subtitle: "", image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80", span: "", large: false, size: "text-lg", href: "#" },
+  { name: "Catering", subtitle: "", image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80", span: "", large: false, size: "text-lg", href: "#" },
+  { name: "Henna Artists", subtitle: "", image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80", span: "", large: false, size: "text-lg", href: "#" },
+  { name: "Car Rental", subtitle: "", image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80", span: "md:col-span-2", large: false, size: "text-xl", href: "#" },
+  { name: "Wedding Stationery", subtitle: "Invites & cards", image: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?auto=format&fit=crop&w=1600&q=80", span: "col-span-2 md:col-span-4", large: false, size: "text-xl", href: "#" },
 ];
 
 function ServicesRow() {
   return (
-    <section className="mx-auto max-w-8xl px-4 py-14 sm:px-6">
-      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">
-        Find every wedding service
-      </h2>
-      <div className="mt-9 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {SERVICES.map((s, i) => (
+    <section className="mx-auto max-w-8xl px-4 py-16 sm:px-6">
+      {/* Section header */}
+      <div className="mb-10 flex flex-col items-end justify-between gap-4 md:flex-row">
+        <div>
+          <h2 className="text-3xl font-bold text-[#132743] md:text-5xl">Find every wedding service</h2>
+        </div>
+      </div>
+
+      {/* Bento grid */}
+      <div className="grid auto-rows-[200px] grid-flow-dense grid-cols-2 gap-4 md:auto-rows-[240px] md:grid-cols-4">
+        {SERVICES.map((s) => (
           <a
             key={s.name}
             href={s.href}
-            style={{ backgroundColor: s.bg }}
-            className={`group relative flex h-20 items-center justify-between overflow-hidden rounded-2xl pl-4 shadow-sm transition-all hover:shadow-md ${i === 5 ? "lg:col-start-2" : ""}`}
+            className={`group relative cursor-pointer overflow-hidden rounded-3xl shadow-md ring-1 ring-black/5 ${s.span}`}
           >
-            {/* decorative corner blobs (exact from shadiyana.pk) */}
+            {/* Full-bleed image with hover zoom */}
             <div
-              aria-hidden="true"
-              style={{ backgroundColor: s.blob }}
-              className="pointer-events-none absolute -left-[45px] -top-[45px] h-16 w-24 rounded-full"
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+              style={{ backgroundImage: `url('${s.image}')` }}
             />
+            {/* Overlay — brand gradient on the feature tile, dark veil elsewhere */}
             <div
-              aria-hidden="true"
-              style={{ backgroundColor: s.blob }}
-              className="pointer-events-none absolute right-0 top-0 h-16 w-16 rounded-bl-full"
+              className={`absolute inset-0 ${
+                s.large
+                  ? "bg-linear-to-t from-[#d73853]/85 via-[#132743]/25 to-transparent"
+                  : "bg-black/35 transition-colors group-hover:bg-black/20"
+              }`}
             />
-            <span className="z-10 max-w-[55%] text-[15px] font-semibold leading-snug text-[#132743]">
-              {s.name}
-            </span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={s.image}
-              alt={s.name}
-              className="relative z-10 h-full w-28 shrink-0 object-contain object-right transition-transform group-hover:scale-105"
-            />
+            <div className="absolute bottom-0 left-0 p-6 md:p-8">
+              <h3 className={`font-bold text-white drop-shadow-sm ${s.size}`}>{s.name}</h3>
+              {s.subtitle && <p className="mt-1 text-sm text-white/80">{s.subtitle}</p>}
+            </div>
           </a>
         ))}
       </div>
@@ -424,31 +436,85 @@ const DEALS = [
 ];
 
 function PopularDeals() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCard = (dir: "left" | "right") => {
+    const track = trackRef.current;
+    if (!track) return;
+    // Scroll by roughly one card + gap so a full card snaps into view.
+    const firstCard = track.querySelector<HTMLElement>("[data-deal-card]");
+    const step = firstCard ? firstCard.offsetWidth + 20 : track.clientWidth * 0.8;
+    track.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  };
+
   return (
-    <section className="bg-[#f7f7f7] py-14">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Popular Deals</h2>
-        <div className="scrollbar-hide mt-9 flex snap-x gap-4 overflow-x-auto pb-2">
-          {DEALS.map((d) => (
-            <a
-              key={d.vendor}
-              href="#"
-              className={`relative flex h-40 w-64 shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl bg-linear-to-br p-4 text-white shadow-lg ${d.tint}`}
+    <section className="border-t border-[#132743]/10 bg-[#f7f7f7] py-20">
+      <div className="mx-auto max-w-8xl px-4 sm:px-6">
+        {/* Header: eyebrow + title + chevron controls */}
+        <div className="mb-12 flex items-center justify-between gap-4">
+          <div>
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-[#d73853]">
+              Limited Time
+            </span>
+            <h2 className="text-3xl font-bold text-[#132743] md:text-5xl">Popular Deals</h2>
+          </div>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              aria-label="Previous deals"
+              onClick={() => scrollByCard("left")}
+              className="flex size-12 items-center justify-center rounded-full border border-[#d73853]/40 text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white"
             >
-              <div className="absolute inset-0 bg-black/20" />
-              <div className="relative flex items-start justify-between">
-                <span className="max-w-[9rem] text-xs font-semibold uppercase tracking-wide text-white/85">
+              <Icon path={ICONS.arrowLeft} className="size-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next deals"
+              onClick={() => scrollByCard("right")}
+              className="flex size-12 items-center justify-center rounded-full border border-[#d73853]/40 text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white"
+            >
+              <Icon path={ICONS.arrowRight} className="size-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Slider */}
+        <div
+          ref={trackRef}
+          className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3"
+        >
+          {DEALS.map((d) => (
+            <div
+              key={d.vendor}
+              data-deal-card
+              className={`group relative flex h-80 w-[86%] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl bg-linear-to-br p-8 text-white shadow-xl ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-3.75rem)/4)] ${d.tint}`}
+            >
+              {/* readability veil */}
+              <div className="absolute inset-0 bg-black/25" />
+              {/* watermark tag icon */}
+              <Icon
+                path={ICONS.tag}
+                className="pointer-events-none absolute -bottom-4 -right-4 size-30 rotate-12 text-white/10 transition-transform group-hover:scale-125"
+              />
+
+              <div className="relative flex items-start justify-between gap-3">
+                <span className="text-xs font-semibold uppercase tracking-widest text-white/70">
                   {d.vendor}
                 </span>
-                <span className="rounded-full bg-[#d73853] px-2 py-0.5 text-[11px] font-bold">
-                  {d.offer}
+                <span className="rounded-full bg-white/20 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-white backdrop-blur-md">
+                  Deal
                 </span>
               </div>
+
               <div className="relative">
-                <p className="text-xl font-bold">{d.offer}</p>
-                <p className="text-xs text-white/80">{d.note}</p>
+                <h4 className="mb-2 text-[40px] font-extrabold leading-tight drop-shadow-sm">{d.offer}</h4>
+                <p className="mb-6 text-sm text-white/80">{d.note}</p>
+                <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:underline">
+                  Grab deal
+                  <Icon path={ICONS.arrowRight} className="size-4" />
+                </a>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
@@ -457,7 +523,7 @@ function PopularDeals() {
 }
 
 /* ================================================================== */
-/* Why Shadiyana?                                                      */
+/* Why Bandhan?                                                      */
 /* ================================================================== */
 const STATS = [
   { icon: ICONS.smile, value: "50k+", label: "Happy Users" },
@@ -466,56 +532,142 @@ const STATS = [
   { icon: ICONS.rings, value: "30k+", label: "Weddings Planned" },
 ];
 
-function WhyShadiyana() {
+function WhyBandhan() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h2 className="text-center text-2xl font-semibold text-[#132743] sm:text-3xl">Why Bandhan?</h2>
-      <div className="mt-9 rounded-3xl bg-[#d73853]/[0.06] px-6 py-10">
-        <div className="grid grid-cols-2 items-center gap-8 lg:grid-cols-4 lg:divide-x lg:divide-rose-200">
-          {STATS.map((s) => (
-            <div key={s.label} className="flex flex-col items-center text-center">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#d73853] shadow-sm">
+    <section className="mx-auto mb-24 max-w-8xl px-4 py-14 text-center sm:px-6">
+      <h2 className="mb-10 text-3xl font-bold tracking-tight text-[#132743] md:text-5xl">Why Bandhan?</h2>
+      <div className="relative flex flex-col gap-6 overflow-hidden rounded-4xl border border-[#f3d9df] bg-white/60 p-8 shadow-[0_8px_32px_rgba(215,56,83,0.06)] backdrop-blur md:flex-row md:items-center md:gap-0 md:p-12">
+        <div className="absolute -left-24 -top-24 -z-10 size-64 rounded-full bg-[#fde5ec] blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 -z-10 size-64 rounded-full bg-[#fbd0dc]/60 blur-3xl" />
+        {STATS.map((s, i) => (
+          <Fragment key={s.label}>
+            <div className="flex flex-col items-center justify-center p-6 transition-transform duration-300 hover:scale-105 md:flex-1">
+              <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-[#ffe9e9] text-[#d73853]">
                 <Icon path={s.icon} className="size-6" />
+              </div>
+              <span className="text-4xl font-bold text-[#d73853] md:text-5xl">{s.value}</span>
+              <span className="mt-2 text-xs font-semibold uppercase tracking-widest text-[#5c4148]">
+                {s.label}
               </span>
-              <p className="mt-3 text-3xl font-bold text-[#132743]">{s.value}</p>
-              <p className="mt-1 text-sm text-zinc-500">{s.label}</p>
             </div>
-          ))}
-        </div>
+            {i < STATS.length - 1 && (
+              <div className="hidden h-32 w-px self-center bg-linear-to-b from-transparent via-[#f3d9df] to-transparent md:block" />
+            )}
+          </Fragment>
+        ))}
       </div>
     </section>
   );
 }
 
 /* ================================================================== */
-/* Get the Shadiyana app                                               */
+/* Get the Bandhan app                                               */
 /* ================================================================== */
+/* Decorative QR-code placeholder (deterministic module pattern). */
+function QrCode({ className = "" }: { className?: string }) {
+  const N = 21;
+  const inFinder = (r: number, c: number) =>
+    (r < 7 && c < 7) || (r < 7 && c >= N - 7) || (r >= N - 7 && c < 7);
+  const modules: { r: number; c: number }[] = [];
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      if (inFinder(r, c)) continue;
+      if ((r * 3 + c * 5 + r * c * 2) % 3 === 0) modules.push({ r, c });
+    }
+  }
+  const Finder = ({ x, y }: { x: number; y: number }) => (
+    <>
+      <rect x={x} y={y} width={7} height={7} fill="#0f1115" />
+      <rect x={x + 1} y={y + 1} width={5} height={5} fill="#fff" />
+      <rect x={x + 2} y={y + 2} width={3} height={3} fill="#0f1115" />
+    </>
+  );
+  return (
+    <svg viewBox={`0 0 ${N} ${N}`} className={className} aria-hidden="true" shapeRendering="crispEdges">
+      <rect width={N} height={N} fill="#fff" />
+      {modules.map((m) => (
+        <rect key={`${m.r}-${m.c}`} x={m.c} y={m.r} width={1} height={1} fill="#0f1115" />
+      ))}
+      <Finder x={0} y={0} />
+      <Finder x={N - 7} y={0} />
+      <Finder x={0} y={N - 7} />
+    </svg>
+  );
+}
+
+/* Stylised app-preview phone (our own mockup — not the source asset). */
+function PhoneMockup() {
+  return (
+    <div className="aspect-9/19 w-44 rounded-[36px] border-[6px] border-[#132743] bg-[#132743] shadow-2xl lg:w-48">
+      <div className="flex h-full w-full flex-col overflow-hidden rounded-[28px] bg-white">
+        {/* app header */}
+        <div className="bg-[#132743] px-3 pb-3 pt-4 text-white">
+          <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-white/30" />
+          <p className="text-[10px] font-semibold">My wedding</p>
+          <div className="mt-1.5 flex items-center gap-1 rounded-full bg-white/15 px-2 py-1">
+            <div className="size-2 rounded-full bg-white/50" />
+            <div className="h-1 w-16 rounded-full bg-white/30" />
+          </div>
+        </div>
+        {/* category tiles */}
+        <div className="grid grid-cols-4 gap-1.5 px-3 pt-3">
+          {["#fbd0dc", "#fde5ec", "#fce9d4", "#f3d9df", "#ffe1e6", "#fde7d6", "#f6dbe0", "#e9d9f3"].map((c, i) => (
+            <div key={i} className="aspect-square rounded-lg" style={{ background: c }} />
+          ))}
+        </div>
+        {/* deals */}
+        <p className="mt-3 px-3 text-[8px] font-semibold text-[#132743]">Exclusive Deals</p>
+        <div className="mt-1 grid grid-cols-2 gap-1.5 px-3">
+          <div className="flex h-12 items-end rounded-lg bg-linear-to-br from-rose-500 to-rose-800 p-1.5">
+            <span className="text-[8px] font-bold text-white">10% Off</span>
+          </div>
+          <div className="flex h-12 items-end rounded-lg bg-linear-to-br from-slate-600 to-slate-900 p-1.5">
+            <span className="text-[8px] font-bold text-white">20% Off</span>
+          </div>
+        </div>
+        {/* recently viewed */}
+        <p className="mt-3 px-3 text-[8px] font-semibold text-[#132743]">Recently Viewed</p>
+        <div className="mt-1 grid grid-cols-2 gap-1.5 px-3 pb-3">
+          <div className="h-10 rounded-lg bg-[#f3d9df]" />
+          <div className="h-10 rounded-lg bg-[#fde5ec]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AppSection() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-[#ffe9e9] px-6 py-10 sm:px-10 lg:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-bold text-[#132743] sm:text-3xl">
+    <section className="mx-auto max-w-8xl px-4 py-8 sm:px-6">
+      {/* Class values mirror the source DOM; its custom breakpoints
+          (tablet / laptop / largeDesktop) are mapped to this project's md / lg / xl. */}
+      <div className="relative mx-auto flex w-[90%] max-w-250 items-center justify-between overflow-hidden rounded-2xl bg-[#ffe9e9] px-8 py-6 md:w-[80%] md:overflow-visible xl:px-10 xl:pr-16 xl:py-8">
+        {/* Phone — absolute, rotated, centred vertically so it bleeds above and below */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-[-40%] right-[-10%] rotate-[-15deg] md:bottom-auto md:right-auto md:left-[52%] md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2"
+        >
+          <PhoneMockup />
+        </div>
+
+        {/* Copy + badges */}
+        <div className="relative z-10 flex flex-col gap-4">
+          <p className="text-2xl font-bold text-[#132743] xl:text-3xl">
             Get the <span className="text-[#d73853]">Bandhan</span> app
-          </h2>
-          <p className="mt-3 max-w-md text-zinc-600">
+          </p>
+          <p className="max-w-xs text-sm text-zinc-600 md:text-xs xl:text-sm">
             Search, compare and book wedding services faster in one app.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="flex flex-col gap-2 md:flex-row md:gap-2">
             <StoreBadge icon={ICONS.play} top="GET IT ON" bottom="Google Play" />
             <StoreBadge icon={ICONS.apple} top="Download on the" bottom="App Store" />
           </div>
         </div>
-        {/* phone mockup */}
-        <div className="flex justify-center" aria-hidden="true">
-          <div className="relative h-64 w-36 rounded-[2rem] border-8 border-[#132743] bg-white shadow-2xl">
-            <div className="absolute left-1/2 top-2 h-1.5 w-12 -translate-x-1/2 rounded-full bg-[#132743]" />
-            <div className="mt-6 grid grid-cols-2 gap-1.5 p-2">
-              {["from-rose-300 to-rose-500", "from-amber-300 to-orange-500", "from-fuchsia-300 to-pink-500", "from-emerald-300 to-teal-500", "from-sky-300 to-blue-500", "from-violet-300 to-purple-500"].map((g, i) => (
-                <div key={i} className={`h-16 rounded-lg bg-linear-to-br ${g}`} />
-              ))}
-            </div>
-          </div>
+
+        {/* Scan QR — hidden until laptop (source: hidden laptop:flex) */}
+        <div className="relative z-10 hidden flex-row items-center gap-5 lg:flex">
+          <p className="text-sm text-[#132743]">Scan the QR to get the app</p>
+          <QrCode className="size-28 shrink-0 rounded-xl bg-white p-2 shadow-sm ring-1 ring-black/5" />
         </div>
       </div>
     </section>
@@ -525,35 +677,70 @@ function AppSection() {
 /* ================================================================== */
 /* Testimonial                                                         */
 /* ================================================================== */
+const TESTIMONIALS = [
+  {
+    name: "Fatima Waseem",
+    quote:
+      "I couldn't have planned my wedding without Bandhan. The team was so cooperative with every little question, right up to the big day. I loved them — I'd choose Bandhan as my planner a thousand times over.",
+  },
+  {
+    name: "Ayesha & Hamza",
+    quote:
+      "From our Mehndi to the Rukhsati, every moment felt curated for us. Bandhan turned a chaotic season into pure celebration — our families are still talking about it.",
+  },
+  {
+    name: "Zainab Ali",
+    quote:
+      "Elegant, calm, and endlessly creative. Bandhan understood the balance between tradition and our modern taste — the Nikkah setup was something out of a dream.",
+  },
+];
+
 function TestimonialSection() {
+  const [idx, setIdx] = useState(0);
+  const t = TESTIMONIALS[idx];
+  const prev = () => setIdx((i) => (i - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+  const next = () => setIdx((i) => (i + 1) % TESTIMONIALS.length);
+
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <div className="grid items-center gap-8 lg:grid-cols-[0.7fr_1fr]">
-        <div className="flex justify-center">
-          <div className="flex h-44 w-64 items-center justify-center rounded-3xl bg-[#ffe9e9]">
-            <span className="flex size-20 items-center justify-center rounded-2xl bg-white text-[#d73853] shadow-md">
-              <Icon path={ICONS.chat} className="size-10" />
-            </span>
+    <section className="mx-auto max-w-8xl px-4 py-16 sm:px-6">
+      <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
+        {/* Visual */}
+        <div className="relative flex h-80 items-center justify-center md:h-105">
+          <div className="absolute size-64 rotate-6 animate-pulse rounded-4xl bg-[#ffe9e9] opacity-70 md:size-80" />
+          <div className="absolute size-64 -rotate-3 rounded-4xl bg-[#fbd0dc] opacity-70 md:size-80" />
+          <div className="relative z-10 flex size-24 items-center justify-center rounded-3xl bg-white text-[#d73853] shadow-xl transition-transform duration-500 hover:scale-105 md:size-32">
+            <Icon path={ICONS.chat} className="size-12 md:size-16" />
           </div>
         </div>
-        <div>
-          <p className="text-lg font-semibold text-[#132743]">Fatima Waseem</p>
-          <p className="mt-3 max-w-xl text-zinc-600">
-            &ldquo;I couldn&apos;t have planned my wedding without Bandhan. The team was so
-            cooperative with every little question, right up to the big day. I loved them —
-            I&apos;d choose Bandhan as my planner a thousand times over.&rdquo;
-            <span className="ml-1 text-[#d73853]">
-              <Icon path={ICONS.heart} className="inline size-4" />{" "}
-              <Icon path={ICONS.heart} className="inline size-4" />
+
+        {/* Copy */}
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-3xl font-bold text-[#132743] md:text-4xl">{t.name}</h3>
+            <div className="h-1 w-12 rounded-full bg-[#d73853]" />
+          </div>
+          <blockquote className="text-lg italic leading-relaxed text-zinc-600 md:text-xl">
+            &ldquo;{t.quote}&rdquo;
+            <span className="mt-4 flex gap-1 not-italic text-[#d73853]">
+              <Icon path={ICONS.heart} className="size-4" />
+              <Icon path={ICONS.heart} className="size-4" />
             </span>
-          </p>
-          <div className="mt-6 flex gap-2">
-            <Button variant="outline" iconOnly rounded="full" aria-label="Previous" className={BTN_OUTLINE}>
-              <Icon path={ICONS.arrowLeft} className="size-4" />
-            </Button>
-            <Button variant="outline" iconOnly rounded="full" aria-label="Next" className={BTN_OUTLINE}>
-              <Icon path={ICONS.arrowRight} className="size-4" />
-            </Button>
+          </blockquote>
+          <div className="flex gap-4 pt-2">
+            <button
+              onClick={prev}
+              aria-label="Previous testimonial"
+              className="flex size-12 items-center justify-center rounded-full border border-[#d73853] text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white active:scale-90"
+            >
+              <Icon path={ICONS.arrowLeft} className="size-5" />
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next testimonial"
+              className="flex size-12 items-center justify-center rounded-full border border-[#d73853] text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white active:scale-90"
+            >
+              <Icon path={ICONS.arrowRight} className="size-5" />
+            </button>
           </div>
         </div>
       </div>
@@ -565,33 +752,81 @@ function TestimonialSection() {
 /* Blogs                                                               */
 /* ================================================================== */
 const BLOGS = [
-  { title: "Best Dholki Songs in 2026: A Complete List for Your Mehndi Night", date: "June 24, 2026", tint: "from-rose-400 to-rose-700" },
-  { title: "Heartfelt Wedding Anniversary Wishes for Couples", date: "June 15, 2026", tint: "from-amber-400 to-orange-700" },
-  { title: "50+ Best Wedding Wishes in Pakistan (2026): Nikkah Duas & More", date: "June 12, 2026", tint: "from-fuchsia-400 to-purple-700" },
+  {
+    tag: "Tradition",
+    tagClass: "bg-[#d73853] text-white",
+    title: "Best Dholki Songs in 2026: A Complete List for Your Mehndi Night",
+    date: "June 24, 2026",
+    img: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80",
+    alt: "Traditional Pakistani Mehndi ceremony with crimson drapes and golden lights",
+  },
+  {
+    tag: "Inspiration",
+    tagClass: "bg-[#132743] text-white",
+    title: "Heartfelt Wedding Anniversary Wishes for Couples",
+    date: "June 15, 2026",
+    img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+    alt: "Outdoor wedding anniversary table with amber glassware at golden hour",
+  },
+  {
+    tag: "Guide",
+    tagClass: "bg-[#d7385e] text-white",
+    title: "50+ Best Wedding Wishes in Pakistan (2026): Nikkah Duas & More",
+    date: "June 12, 2026",
+    img: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80",
+    alt: "Serene Nikkah ceremony with lavender florals under a translucent canopy",
+  },
 ];
 
 function BlogsSection() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold text-[#132743] sm:text-2xl">
+    <section className="mx-auto max-w-8xl space-y-8 px-4 py-16 sm:px-6">
+      <div className="flex items-end justify-between gap-6">
+        <h2 className="max-w-2xl text-3xl font-bold text-[#132743] md:text-5xl">
           Love, Lights &amp; Planning – Dive into Our Blogs
         </h2>
-        <a href="#" className="flex shrink-0 items-center gap-1 text-sm font-medium text-[#d73853] hover:underline">
-          View All <Icon path={ICONS.arrowRight} className="size-4" />
+        <a
+          href="#"
+          className="group hidden shrink-0 items-center gap-2 font-semibold text-[#d73853] hover:underline sm:flex"
+        >
+          <span>View All</span>
+          <Icon path={ICONS.arrowRight} className="size-4 transition-transform group-hover:translate-x-1" />
         </a>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {BLOGS.map((b) => (
           <a
             key={b.title}
             href="#"
-            className="group overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            className="group overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
           >
-            <div className={`h-44 bg-linear-to-br ${b.tint}`} aria-hidden="true" />
-            <div className="p-5">
-              <h3 className="font-semibold text-[#132743] group-hover:text-[#d73853]">{b.title}</h3>
-              <p className="mt-2 text-sm text-zinc-400">{b.date}</p>
+            <div className="relative h-64 overflow-hidden">
+              <div
+                role="img"
+                aria-label={b.alt}
+                className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url('${b.img}')` }}
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/25 to-transparent" />
+              <div className="absolute left-4 top-4">
+                <span
+                  className={`${b.tagClass} rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur-md`}
+                >
+                  {b.tag}
+                </span>
+              </div>
+            </div>
+            <div className="space-y-3 p-6">
+              <h4 className="line-clamp-2 text-xl font-semibold text-[#132743] transition-colors group-hover:text-[#d73853]">
+                {b.title}
+              </h4>
+              <div className="flex items-center gap-2 text-sm text-zinc-500">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+                <span>{b.date}</span>
+              </div>
             </div>
           </a>
         ))}
@@ -600,86 +835,22 @@ function BlogsSection() {
   );
 }
 
-/* ================================================================== */
-/* Vendor CTA band                                                     */
-/* ================================================================== */
-function VendorBand() {
-  return (
-    <section className="bg-[#d7385e]">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <h2 className="max-w-lg text-4xl font-bold leading-tight text-white sm:text-5xl">
-          Find the talent needed to arrange your wedding
-        </h2>
-        <div className="mt-8">
-          <Button variant="outline" size="lg" rounded="full" className="!border-white !text-white hover:!bg-white hover:!text-[#d7385e]">
-            Get Started
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-/* ================================================================== */
-/* City services                                                       */
-/* ================================================================== */
-const CITY_SERVICES = [
-  "Wedding Services in Lahore",
-  "Wedding Services in Islamabad",
-  "Wedding Services in Karachi",
-  "Wedding Services in Rawalpindi",
-];
-const SERVICE_LINKS = (city: string) => [
-  `Wedding Venues in ${city}`,
-  `Photographers in ${city}`,
-  `Makeup Artists in ${city}`,
-  `Caterers in ${city}`,
-  `Decor in ${city}`,
-  `Henna Artists in ${city}`,
-];
-
-function CityServices() {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
-        {CITY_SERVICES.map((heading) => {
-          const city = heading.replace("Wedding Services in ", "");
-          return (
-            <div key={heading}>
-              <h3 className="font-bold text-[#132743]">{heading}</h3>
-              <ul className="mt-4 space-y-2.5">
-                {SERVICE_LINKS(city).map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm text-zinc-500 transition hover:text-[#d73853]">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
 
 /* ================================================================== */
 /* Page                                                                */
 /* ================================================================== */
 export default function ShadiyanaLanding() {
   return (
-    <main className={`${inter.variable} min-h-screen bg-white font-[family-name:var(--font-inter)]`}>
+    <main className={`${inter.variable} min-h-screen bg-white font-(family-name:--font-inter)`}>
       <Header />
       <Hero />
       <ServicesRow />
       <PopularDeals />
-      <WhyShadiyana />
+      <WhyBandhan />
       <AppSection />
       <TestimonialSection />
       <BlogsSection />
-      <VendorBand />
-      <CityServices />
       <Footer />
     </main>
   );
