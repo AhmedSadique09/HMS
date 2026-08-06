@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 /* Brand tokens (match the landing page) ----------------------------- */
 /* heading navy #132743 · accent pink #d73853                          */
@@ -230,6 +231,7 @@ export default function Header() {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [notifPage, setNotifPage] = useState(0);
   const notifRef = useRef<HTMLDivElement>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const totalPages = Math.ceil(NOTIFICATIONS.length / NOTIF_PER_PAGE);
   const pageItems = NOTIFICATIONS.slice(notifPage * NOTIF_PER_PAGE, notifPage * NOTIF_PER_PAGE + NOTIF_PER_PAGE);
@@ -256,6 +258,13 @@ export default function Header() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isNotifOpen]);
+
+  useEffect(() => {
+    const read = () => setIsLoggedIn(localStorage.getItem("bandhan_auth") === "1");
+    read();
+    window.addEventListener("storage", read);
+    return () => window.removeEventListener("storage", read);
+  }, []);
 
   return (
     <header
@@ -436,8 +445,26 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Right: bell icon, then profile icon */}
-        <div className="flex items-center gap-2">
+        {/* Right: auth buttons (logged-out) or bell + profile (logged-in) */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {!isLoggedIn && (
+            <>
+              <Link
+                href="/auth/signin"
+                className="rounded-lg px-4 py-2 text-sm font-semibold text-[#132743] transition-colors hover:text-[#d73853]"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="rounded-lg bg-[#d73853] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#c02f48]"
+              >
+                Sign up
+              </Link>
+            </>
+          )}
+          {isLoggedIn && (
+            <>
           <div className="relative" ref={notifRef}>
             <button
               type="button"
@@ -538,6 +565,8 @@ export default function Header() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="https://i.pravatar.cc/80" alt="Profile" className="size-full object-cover" />
           </button>
+            </>
+          )}
         </div>
       </div>
     </header>

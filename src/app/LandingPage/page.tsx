@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -56,8 +56,24 @@ const ICONS = {
 /* ================================================================== */
 
 /* Full-bleed hero background (wedding scene). */
-const HERO_IMG =
-  "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80";
+/* Hero background slideshow */
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=2000&q=80",
+];
+const HERO_SLIDE_MS = 5000;
+
+/* Featured banquets & marquees — Airbnb-style cards. */
+const FEATURED_VENUES = [
+  { name: "Grand Palm Banquet", type: "Banquet", location: "Gulberg, Lahore", rating: "4.9", price: "Rs 350,000", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" },
+  { name: "Royal Grand Marquee", type: "Marquee", location: "F-11, Islamabad", rating: "4.8", price: "Rs 280,000", image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" },
+  { name: "Emerald Hall", type: "Banquet", location: "Clifton, Karachi", rating: "4.7", price: "Rs 300,000", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80" },
+  { name: "Rose Garden Lawn", type: "Marquee", location: "Bahria, Rawalpindi", rating: "4.8", price: "Rs 260,000", image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" },
+  { name: "Pearl Continental Hall", type: "Banquet", location: "Canal Road, Faisalabad", rating: "4.9", price: "Rs 400,000", image: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80" },
+  { name: "Skyline Rooftop", type: "Rooftop", location: "DHA, Lahore", rating: "4.6", price: "Rs 320,000", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" },
+];
 
 /* Service options (same set as the header Services menu) */
 const SERVICE_MENU = [
@@ -190,6 +206,19 @@ const BLOGS = [
 /* Landing page                                                        */
 /* ================================================================== */
 export default function LandingPage() {
+  /* Hero background slideshow — pauses when the tab is hidden or motion is reduced */
+  const [heroIdx, setHeroIdx] = useState(0);
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      setHeroIdx((i) => (i + 1) % HERO_IMAGES.length);
+    }, HERO_SLIDE_MS);
+    return () => clearInterval(id);
+  }, []);
+
   /* Hero search state */
   const [activeTab, setActiveTab] = useState<"service" | "name">("service");
   const [isServiceOpen, setIsServiceOpen] = useState(false);
@@ -205,6 +234,16 @@ export default function LandingPage() {
     if (!track) return;
     // Scroll by roughly one card + gap so a full card snaps into view.
     const firstCard = track.querySelector<HTMLElement>("[data-deal-card]");
+    const step = firstCard ? firstCard.offsetWidth + 20 : track.clientWidth * 0.8;
+    track.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  };
+
+  /* Featured venues slider */
+  const venuesRef = useRef<HTMLDivElement>(null);
+  const scrollVenues = (dir: "left" | "right") => {
+    const track = venuesRef.current;
+    if (!track) return;
+    const firstCard = track.querySelector<HTMLElement>("[data-venue-card]");
     const step = firstCard ? firstCard.offsetWidth + 20 : track.clientWidth * 0.8;
     track.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
   };
@@ -240,18 +279,24 @@ export default function LandingPage() {
       {/* ============================================================ */}
       {/* Hero — Plan the Shadi of your dreams                          */}
       {/* ============================================================ */}
-      <section className="relative z-30 flex min-h-dvh items-center justify-center">
-        {/* Full-bleed background */}
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 h-full w-full bg-cover bg-center"
-            style={{ backgroundImage: `url('${HERO_IMG}')` }}
-          />
+      <section className="relative z-30 flex min-h-[72dvh] items-start justify-center">
+        {/* Full-bleed background — cross-fading slideshow */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {HERO_IMAGES.map((img, i) => (
+            <div
+              key={img}
+              aria-hidden
+              className={`absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+                i === heroIdx ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ backgroundImage: `url('${img}')` }}
+            />
+          ))}
           {/* Brand-tinted overlay for text contrast */}
           <div className="absolute inset-0 bg-linear-to-b from-[#132743]/75 via-[#132743]/45 to-[#132743]/90" />
         </div>
 
-        <div className="relative z-20 w-full max-w-5xl px-4 py-20 text-center sm:px-6">
+        <div className="relative z-20 w-full max-w-5xl px-4 pb-20 pt-14 text-center sm:px-6 sm:pt-16">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-[#ff8fa3] sm:text-sm">
             Bandhan Weddings
           </p>
@@ -456,6 +501,74 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* Featured venues — Airbnb-style slider                        */}
+      {/* ============================================================ */}
+      <section className="mx-auto max-w-8xl px-4 py-16 sm:px-6">
+        <div className="mb-8 flex items-end justify-between gap-4">
+          <div>
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-[#d73853]">
+              Featured
+            </span>
+            <h2 className="text-3xl font-bold text-[#132743] md:text-5xl">Banquets &amp; marquees</h2>
+          </div>
+          <div className="hidden gap-3 sm:flex">
+            <button
+              type="button"
+              aria-label="Previous venues"
+              onClick={() => scrollVenues("left")}
+              className="flex size-11 items-center justify-center rounded-full border border-[#d73853]/40 text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white"
+            >
+              <Icon path={ICONS.arrowLeft} className="size-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next venues"
+              onClick={() => scrollVenues("right")}
+              className="flex size-11 items-center justify-center rounded-full border border-[#d73853]/40 text-[#d73853] transition-all hover:bg-[#d73853] hover:text-white"
+            >
+              <Icon path={ICONS.arrowRight} className="size-5" />
+            </button>
+          </div>
+        </div>
+
+        <div ref={venuesRef} className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2">
+          {FEATURED_VENUES.map((v) => (
+            <a key={v.name} href="#" data-venue-card className="group w-72 shrink-0 snap-start sm:w-80">
+              <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
+                <div
+                  role="img"
+                  aria-label={v.name}
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url('${v.image}')` }}
+                />
+                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-[#132743] backdrop-blur">
+                  {v.type}
+                </span>
+              </div>
+              <div className="mt-3">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-semibold text-[#132743]">{v.name}</h3>
+                  <span className="flex shrink-0 items-center gap-1 text-sm font-medium text-[#132743]">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-4 text-[#d73853]">
+                      <path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+                    </svg>
+                    {v.rating}
+                  </span>
+                </div>
+                <p className="mt-0.5 flex items-center gap-1 text-sm text-zinc-500">
+                  <Icon path={ICONS.pin} className="size-4" />
+                  {v.location}
+                </p>
+                <p className="mt-1.5 text-sm text-zinc-700">
+                  <span className="font-semibold text-[#132743]">{v.price}</span> / event
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 
