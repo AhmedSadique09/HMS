@@ -50,13 +50,14 @@ const ICON_ABOUT = (
     />
   </svg>
 );
-const ICON_BLOG = (
+const ICON_CONTACT = (
   <svg viewBox="0 0 40 40" fill="none" className="size-6" aria-hidden="true">
     <path
-      d="M27.57 14.41L28.23 13.76C29.32 12.68 31.09 12.68 32.18 13.76C33.27 14.83 33.27 16.58 32.18 17.65L31.52 18.3M27.57 14.41C27.57 14.41 27.65 15.79 28.89 17C30.12 18.22 31.52 18.3 31.52 18.3M27.57 14.41L21.52 20.37C21.11 20.78 20.9 20.98 20.73 21.2C20.52 21.46 20.34 21.75 20.19 22.05C20.07 22.3 19.98 22.57 19.8 23.12L19.02 25.41M19.02 25.41L18.78 26.91C18.51 27 18.21 26.93 18.01 26.73C17.81 26.54 17.74 26.24 17.83 25.98L19.02 25.41ZM13.11 21.35H16.66M13.11 15.75H22.34M13.11 26.95H15.24M29.91 7.59C28.25 5.95 25.57 5.95 20.21 5.95H17.37C12.01 5.95 9.33 5.95 7.66 7.59C6 9.23 6 11.87 6 17.15V22.75C6 28.03 6 30.67 7.66 32.31C9.33 33.95 12.01 33.95 17.37 33.95H20.21C25.57 33.95 28.25 33.95 29.91 32.31C31.25 30.99 31.52 29.02 31.57 25.55"
+      d="M10.2 7.8H29.8C32.6 7.8 34 9.2 34 12V28C34 30.8 32.6 32.2 29.8 32.2H10.2C7.4 32.2 6 30.8 6 28V12C6 9.2 7.4 7.8 10.2 7.8ZM9.5 13.5L18.4 19.7C19.36 20.37 20.64 20.37 21.6 19.7L30.5 13.5"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -117,7 +118,7 @@ const NAV_ITEMS: {
   },
   {
     label: "Services",
-    href: "#",
+    href: "/services",
     dropdown: [
       {
         label: "Photographers",
@@ -220,8 +221,8 @@ const NAV_ITEMS: {
     label: "Insights",
     href: "#",
     dropdown: [
-      { label: "About Us", href: "#", icon: ICON_ABOUT, tagline: "Trusted planning, joyful weddings." },
-      { label: "Blogs", href: "#", icon: ICON_BLOG, tagline: "Wedding tips & inspiration." },
+      { label: "About Us", href: "/about-us", icon: ICON_ABOUT, tagline: "Trusted planning, joyful weddings." },
+      { label: "Contact Us", href: "/contact-us", icon: ICON_CONTACT, tagline: "Talk to our wedding team." },
     ],
   },
 ];
@@ -268,9 +269,9 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+      className={`sticky top-0 left-0 right-0 z-50 w-full border-b border-[#132743]/10 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 shadow-[0_8px_20px_5px_rgba(0,0,0,0.15)] border border-white/20 backdrop-blur-lg"
+          ? "bg-white/80 shadow-[0_8px_20px_5px_rgba(0,0,0,0.15)] backdrop-blur-lg"
           : "bg-white/40 backdrop-blur-sm"
       }`}
     >
@@ -278,16 +279,20 @@ export default function Header() {
         {/* Left: logo + nav */}
         <div className="flex items-center gap-10 lg:gap-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
+          <Link
+            href="/"
+            aria-label="Bandhan — go to home"
+            className="flex items-center gap-2 rounded-md outline-offset-4 focus-visible:outline-2 focus-visible:outline-[#d73853]"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Logo.png" alt="HMS" className="h-10 w-auto object-contain" />
-          </a>
+            <img src="/Logo.png" alt="Bandhan" className="h-10 w-auto object-contain" />
+          </Link>
 
           {/* Nav links (text only) */}
           <nav className="hidden items-center gap-8 text-base font-normal text-[#132743] lg:flex">
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="group relative">
-                <a
+                <Link
                   href={item.href}
                   className="flex items-center gap-1 transition-colors group-hover:text-[#d73853]"
                 >
@@ -296,7 +301,7 @@ export default function Header() {
                     path={ICONS.chevron}
                     className="size-4 transition-transform duration-300 group-hover:rotate-180"
                   />
-                </a>
+                </Link>
 
                 {/* White dropdown box (opens on hover) */}
                 <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
@@ -377,7 +382,7 @@ export default function Header() {
                     >
                       <div className={item.dropdown.length > 6 ? "grid grid-cols-2 gap-1" : ""}>
                       {item.dropdown.map((sub) => (
-                        <a
+                        <Link
                           key={sub.label}
                           href={sub.href}
                           className="group/item flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-zinc-50"
@@ -412,7 +417,7 @@ export default function Header() {
                               <span className="mt-0.5 block text-sm text-zinc-500">{sub.tagline}</span>
                             )}
                           </span>
-                        </a>
+                        </Link>
                       ))}
                       </div>
                       {item.viewAll && (

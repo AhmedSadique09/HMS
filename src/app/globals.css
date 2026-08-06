@@ -11,6 +11,15 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --container-8xl: 88rem;
+
+  /* Brand palette — the navy/rose pair already used across the landing page. */
+  --color-ink: #132743;
+  --color-brand: #d73853;
+
+  /* Fluid marketing heading scale (about page and other content sections). */
+  --text-h1: clamp(2rem, 1.5rem + 2.5vw, 3.625rem);
+  --text-h2: clamp(1.75rem, 1.25rem + 2vw, 2.5rem);
+  --text-h3: clamp(1.5rem, 1.125rem + 1.5vw, 2rem);
 }
 
 @media (prefers-color-scheme: dark) {

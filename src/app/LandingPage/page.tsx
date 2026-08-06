@@ -2,8 +2,10 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { FEATURED_VENUES } from "@/data/venues";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -65,15 +67,8 @@ const HERO_IMAGES = [
 ];
 const HERO_SLIDE_MS = 5000;
 
-/* Featured banquets & marquees — Airbnb-style cards. */
-const FEATURED_VENUES = [
-  { name: "Grand Palm Banquet", type: "Banquet", location: "Gulberg, Lahore", rating: "4.9", price: "Rs 350,000", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" },
-  { name: "Royal Grand Marquee", type: "Marquee", location: "F-11, Islamabad", rating: "4.8", price: "Rs 280,000", image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" },
-  { name: "Emerald Hall", type: "Banquet", location: "Clifton, Karachi", rating: "4.7", price: "Rs 300,000", image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80" },
-  { name: "Rose Garden Lawn", type: "Marquee", location: "Bahria, Rawalpindi", rating: "4.8", price: "Rs 260,000", image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" },
-  { name: "Pearl Continental Hall", type: "Banquet", location: "Canal Road, Faisalabad", rating: "4.9", price: "Rs 400,000", image: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80" },
-  { name: "Skyline Rooftop", type: "Rooftop", location: "DHA, Lahore", rating: "4.6", price: "Rs 320,000", image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" },
-];
+/* Featured banquets & marquees — cards link through to /venues/[slug].
+   Records live in @/data/venues so the slider and the profile page stay in sync. */
 
 /* Service options (same set as the header Services menu) */
 const SERVICE_MENU = [
@@ -537,7 +532,12 @@ export default function LandingPage() {
 
         <div ref={venuesRef} className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2">
           {FEATURED_VENUES.map((v) => (
-            <a key={v.name} href="#" data-venue-card className="group w-72 shrink-0 snap-start sm:w-80">
+            <Link
+              key={v.slug}
+              href={`/venues/${v.slug}`}
+              data-venue-card
+              className="group w-72 shrink-0 snap-start sm:w-80"
+            >
               <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
                 <div
                   role="img"
@@ -567,7 +567,7 @@ export default function LandingPage() {
                   <span className="font-semibold text-[#132743]">{v.price}</span> / event
                 </p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
