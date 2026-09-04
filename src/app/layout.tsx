@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import BackToTop from "@/components/BackToTop";
+import BackToTop from "@/components/includes/BackToTop";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: "Bandhan: Your Go-To Wedding Planning Hub in Pakistan",
   description:
     "Plan your Shadi in 3 minutes. Discover wedding venues, photographers, bridal makeup, decor, catering and more across Pakistan. Design demo built from the elements library.",
+  icons: {
+    icon: "/title.png",
+    shortcut: "/title.png",
+    apple: "/title.png",
+  },
 };
 
 export default function RootLayout({

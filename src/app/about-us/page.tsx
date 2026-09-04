@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import { InnerBanner } from "@/components/common/InnerBanner";
-import { AboutIntro } from "@/components/about/AboutIntro";
-import { HowWeWork } from "@/components/about/HowWeWork";
-import { WhatWeOffer } from "@/components/about/WhatWeOffer";
-import { RealCouples } from "@/components/about/RealCouples";
-import { StayConnected } from "@/components/about/StayConnected";
+import Footer from "@/components/includes/Footer";
+import Header from "@/components/includes/Header";
+import { AboutSections } from "@/web/about";
 
 export const metadata: Metadata = {
   title: "About Bandhan — Pakistan's Wedding Planning Platform",
@@ -18,17 +13,7 @@ export default function AboutUsPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-
-      <InnerBanner title="About Bandhan" description="Making Every Pakistani Wedding Effortless" />
-
-      <main className="grow">
-        <AboutIntro />
-        <HowWeWork />
-        <WhatWeOffer />
-        <RealCouples />
-        <StayConnected />
-      </main>
-
+      <AboutSections />
       <Footer />
     </div>
   );

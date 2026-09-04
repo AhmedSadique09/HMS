@@ -3,8 +3,10 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+/* This page's glyphs are filled paths, so the solid renderer is the match. */
+import { SolidIcon as Icon } from "@/components/elements/Icon";
+import Header from "@/components/includes/Header";
+import Footer from "@/components/includes/Footer";
 import { FEATURED_VENUES } from "@/data/venues";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -12,15 +14,6 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 /* ================================================================== */
 /* Shared helpers                                                      */
 /* ================================================================== */
-
-/* Inline SVG glyph helper (decorative, not a reusable UI component).  */
-function Icon({ path, className = "size-6" }: { path: string; className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path fillRule="evenodd" clipRule="evenodd" d={path} />
-    </svg>
-  );
-}
 
 const ICONS = {
   rings:
