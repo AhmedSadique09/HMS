@@ -64,7 +64,7 @@ export function SignUp() {
             <button
               key={key}
               type="button"
-              onClick={() => (key === "vendor" ? router.push("/manage-venue") : setRole(key))}
+              onClick={() => setRole(key)}
               className="group flex w-full items-center gap-4 rounded-2xl border border-zinc-200 p-5 text-left transition hover:border-[#d73853] hover:bg-[#fff5f7] hover:shadow-sm"
             >
               <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#ffe9e9] text-[#d73853]">
@@ -105,7 +105,14 @@ export function SignUp() {
         onSubmit={(e) => {
           e.preventDefault();
           localStorage.setItem("bandhan_auth", "1");
-          router.push("/");
+          if (role === "vendor") {
+            // Venue admins verify by OTP before onboarding; reuse the shared
+            // OTP screen and tell it where to continue afterwards.
+            sessionStorage.setItem("bandhan_otp_next", "/manage-venue/onboarding");
+            router.push("/auth/otp");
+          } else {
+            router.push("/");
+          }
         }}
       >
         <div className="grid grid-cols-2 gap-4">

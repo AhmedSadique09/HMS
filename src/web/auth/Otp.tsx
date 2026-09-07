@@ -53,7 +53,12 @@ export function Otp() {
         className="space-y-6"
         onSubmit={(e) => {
           e.preventDefault();
-          router.push("/auth/resetpassword");
+          // Shared by the forgot-password flow and venue-admin signup — the
+          // caller leaves a hint of where to continue after verification,
+          // defaulting to the password-reset step.
+          const next = sessionStorage.getItem("bandhan_otp_next") ?? "/auth/resetpassword";
+          sessionStorage.removeItem("bandhan_otp_next");
+          router.push(next);
         }}
       >
         <div className="flex justify-between gap-2 sm:gap-3">
