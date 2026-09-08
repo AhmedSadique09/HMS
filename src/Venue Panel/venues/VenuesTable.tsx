@@ -9,7 +9,7 @@ function formatPkr(amount: number) {
 /** Table view of the venue admin's halls/marquees — photo, ratings, and actions. */
 export function VenuesTable({ venues }: { venues: VenueListing[] }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+    <div className="overflow-x-auto rounded-xl border border-ink/10 bg-white shadow-sm">
       <table className="w-full min-w-215 text-left text-sm">
         <thead>
           <tr className="border-b border-ink/10 bg-zinc-100 text-xs font-medium uppercase tracking-wide text-zinc-500">

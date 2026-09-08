@@ -3,7 +3,7 @@ import { NOTIFICATIONS } from "./dashboardData";
 /** "Notifications" — recent activity feed, unread items marked with a pink dot. */
 export function NotificationsPanel() {
   return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <h3 className="font-serif text-lg font-semibold text-ink">Notifications</h3>
       <ul className="mt-3 flex flex-col gap-2">
         {NOTIFICATIONS.map((notification) => (

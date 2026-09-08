@@ -6,7 +6,7 @@ import { REVENUE_BY_MONTH } from "./dashboardData";
 /** "Monthly Revenue" — smooth pink area chart, values in PKR millions. */
 export function RevenueChart() {
   return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <h3 className="font-serif text-lg font-semibold text-ink">Monthly Revenue</h3>
       <div className="mt-4 h-72">
         <ResponsiveContainer width="100%" height="100%">

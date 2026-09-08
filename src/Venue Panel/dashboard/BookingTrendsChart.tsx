@@ -6,7 +6,7 @@ import { BOOKING_TRENDS } from "./dashboardData";
 /** "Booking Trends" — pink monthly bar chart. */
 export function BookingTrendsChart() {
   return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <h3 className="font-serif text-lg font-semibold text-ink">Booking Trends</h3>
       <div className="mt-4 h-64">
         <ResponsiveContainer width="100%" height="100%">

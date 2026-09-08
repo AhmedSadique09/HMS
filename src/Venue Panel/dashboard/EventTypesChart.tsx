@@ -6,7 +6,7 @@ import { EVENT_TYPES } from "./dashboardData";
 /** "Event Types" — donut chart with a wrapping color-key legend underneath. */
 export function EventTypesChart() {
   return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <h3 className="font-serif text-lg font-semibold text-ink">Event Types</h3>
       <div className="mt-4 h-52">
         <ResponsiveContainer width="100%" height="100%">

@@ -17,7 +17,7 @@ export function StatCard({ label, value, tint, icon }: StatDatum) {
   const IconComponent = ICONS[icon];
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="flex items-center justify-between rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <div>
         <p className="text-sm text-ink/50">{label}</p>
         <p className="mt-1.5 text-2xl font-bold text-ink">{value}</p>

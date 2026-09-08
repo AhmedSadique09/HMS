@@ -1,16 +1,11 @@
 "use client";
 
-import { Eye, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { CheckCircle2, Download, Eye, MoreVertical } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import type { PaymentStatus } from "./paymentsData";
 
-const ITEMS = [
-  { label: "View", icon: Eye, className: "text-ink/70 hover:bg-ink/5" },
-  { label: "Edit", icon: Pencil, className: "text-ink/70 hover:bg-ink/5" },
-  { label: "Delete", icon: Trash2, className: "text-rose-600 hover:bg-rose-50" },
-] as const;
-
-/** One venue row's View/Edit/Delete actions, collapsed behind a three-dot menu. */
-export function VenueRowActions() {
+/** One transaction row's actions, collapsed behind a three-dot menu. */
+export function PaymentRowActions({ status }: { status: PaymentStatus }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -24,12 +19,20 @@ export function VenueRowActions() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  const items = [
+    { label: "View Invoice", icon: Eye, className: "text-ink/70 hover:bg-ink/5" },
+    { label: "Download Receipt", icon: Download, className: "text-ink/70 hover:bg-ink/5" },
+    ...(status === "pending"
+      ? [{ label: "Mark as Paid", icon: CheckCircle2, className: "text-brand hover:bg-brand/5" }]
+      : []),
+  ];
+
   return (
     <div ref={menuRef} className="relative inline-block">
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
-        aria-label="Venue actions"
+        aria-label="Payment actions"
         aria-expanded={isOpen}
         className="flex size-8 items-center justify-center rounded-full text-ink/50 transition hover:bg-ink/5"
       >
@@ -37,8 +40,8 @@ export function VenueRowActions() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-1 w-36 rounded-2xl border border-ink/10 bg-white p-1.5 shadow-lg">
-          {ITEMS.map(({ label, icon: ItemIcon, className }) => (
+        <div className="absolute right-0 z-10 mt-1 w-44 rounded-2xl border border-ink/10 bg-white p-1.5 shadow-lg">
+          {items.map(({ label, icon: ItemIcon, className }) => (
             <button
               key={label}
               type="button"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Button from "@/components/elements/Button";
 import { AUTH_BTN, AuthLayout, MailIcon } from "./AuthLayout";
+import { DEMO_CREDENTIALS } from "./demoCredentials";
 import { PasswordField } from "./PasswordField";
 import { FIELD, ICON_WRAP, LABEL } from "./fieldStyles";
 
@@ -33,7 +34,11 @@ export function SignIn() {
         onSubmit={(e) => {
           e.preventDefault();
           localStorage.setItem("bandhan_auth", "1");
-          router.push("/");
+          const email = String(new FormData(e.currentTarget).get("email") ?? "")
+            .trim()
+            .toLowerCase();
+          const isVenueAdmin = email === DEMO_CREDENTIALS.vendor.email.toLowerCase();
+          router.push(isVenueAdmin ? "/manage-venue/dashboard" : "/");
         }}
       >
         <div>
@@ -66,6 +71,24 @@ export function SignIn() {
           Sign in
         </Button>
       </form>
+
+      <div className="mt-6 rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Demo credentials</p>
+        <div className="mt-2 space-y-1.5 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
+            <span className="font-medium text-[#132743]">Customer</span>
+            <span className="text-zinc-500">
+              {DEMO_CREDENTIALS.customer.email} / {DEMO_CREDENTIALS.customer.password}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
+            <span className="font-medium text-[#132743]">Venue Admin</span>
+            <span className="text-zinc-500">
+              {DEMO_CREDENTIALS.vendor.email} / {DEMO_CREDENTIALS.vendor.password}
+            </span>
+          </div>
+        </div>
+      </div>
     </AuthLayout>
   );
 }

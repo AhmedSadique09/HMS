@@ -1,6 +1,7 @@
 "use client";
 
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
+import { useRef } from "react";
 import type { VenueInformationData } from "./onboardingData";
 
 const FIELD =
@@ -51,6 +52,57 @@ function ImageDropzone({
 }
 
 /**
+ * Circular logo uploader — a dashed preview circle with a remove button once
+ * a file is set, plus a separate "Choose File" trigger and helper text.
+ */
+function LogoUploader({ file, onFile }: { file: File | null; onFile: (file: File | null) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div className="flex items-center gap-4">
+      <div className="relative shrink-0">
+        <figure className="flex size-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-ink/20 bg-ink/[0.02]">
+          {file ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={URL.createObjectURL(file)} alt="Venue logo preview" className="size-full object-cover" />
+          ) : (
+            <ImagePlus className="size-7 text-ink/25" />
+          )}
+        </figure>
+        {file && (
+          <button
+            type="button"
+            onClick={() => onFile(null)}
+            aria-label="Remove logo"
+            className="absolute -right-1 -top-1 flex size-6 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm transition hover:bg-rose-600"
+          >
+            <X className="size-3.5" />
+          </button>
+        )}
+      </div>
+
+      <div>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+        />
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="rounded-xl border border-ink/15 px-4 py-2 text-sm font-semibold text-ink transition hover:bg-ink/5"
+        >
+          Choose File
+        </button>
+        <p className="mt-1.5 text-xs text-ink/40">JPG or PNG, up to 5MB</p>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Onboarding step 1 — basic venue information: cover + profile image,
  * name, description, address fields, map link, and contact numbers.
  */
@@ -60,25 +112,23 @@ export function StepVenueInformation({ value, onChange }: Props) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <span className={LABEL}>Cover &amp; profile image</span>
-        <div className="relative">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div>
+          <span className={LABEL}>Cover Photo</span>
           <ImageDropzone
             label="Upload cover photo"
             file={value.coverImage}
             onFile={(file) => set("coverImage", file)}
             className="h-40 w-full"
           />
-          <ImageDropzone
-            label="Logo"
-            file={value.profileImage}
-            onFile={(file) => set("profileImage", file)}
-            className="absolute -bottom-8 left-6 size-20 rounded-full border-4 border-white shadow-sm"
-          />
+        </div>
+        <div>
+          <span className={LABEL}>Venue Logo</span>
+          <LogoUploader file={value.profileImage} onFile={(file) => set("profileImage", file)} />
         </div>
       </div>
 
-      <div className="pt-6">
+      <div>
         <label htmlFor="venueName" className={LABEL}>Venue name</label>
         <input
           id="venueName"

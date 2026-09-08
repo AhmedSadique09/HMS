@@ -94,6 +94,41 @@ export const NOTIFICATIONS: NotificationDatum[] = [
     time: "3 days ago",
     isUnread: false,
   },
+  {
+    id: "n5",
+    title: "New Message",
+    description: "You have a new message from Ayesha Tariq about her Nikah booking.",
+    time: "5 hours ago",
+    isUnread: true,
+  },
+  {
+    id: "n6",
+    title: "Venue Approved",
+    description: "Your listing for Grand Ballroom has been approved and is now live.",
+    time: "1 day ago",
+    isUnread: false,
+  },
+  {
+    id: "n7",
+    title: "Review Received",
+    description: "Zara Hussain left a 5-star review for Rose Garden.",
+    time: "2 days ago",
+    isUnread: true,
+  },
+  {
+    id: "n8",
+    title: "Payout Processed",
+    description: "PKR 875,000 has been transferred to your bank account.",
+    time: "4 days ago",
+    isUnread: false,
+  },
+  {
+    id: "n9",
+    title: "Document Required",
+    description: "Please upload your CNIC copy to complete venue verification.",
+    time: "5 days ago",
+    isUnread: true,
+  },
 ];
 
 export type BookingStatus = "confirmed" | "pending" | "completed";

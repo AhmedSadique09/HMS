@@ -39,7 +39,7 @@ export function BookingManagement() {
 
       <div className="mt-6">
         {filteredBookings.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-ink/15 py-12 text-center text-sm text-ink/40">
+          <p className="rounded-xl border border-dashed border-ink/15 py-12 text-center text-sm text-ink/40">
             {query ? `No ${activeStatus} bookings match "${searchQuery}".` : `No ${activeStatus} bookings right now.`}
           </p>
         ) : (

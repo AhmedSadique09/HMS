@@ -22,13 +22,13 @@ export function BookingRowActions({ status }: { status: BookingStatus }) {
   const items = [
     ...(status === "pending"
       ? [
-          { label: "Accept", icon: Check, className: "text-brand" },
-          { label: "Reject", icon: X, className: "text-rose-600" },
+          { label: "Accept", icon: Check, className: "text-brand hover:bg-brand/5" },
+          { label: "Reject", icon: X, className: "text-rose-600 hover:bg-rose-50" },
         ]
       : []),
-    { label: "Call", icon: Phone, className: "text-ink/70" },
-    { label: "Message", icon: MessageCircle, className: "text-ink/70" },
-    { label: "Invoice", icon: FileText, className: "text-ink/70" },
+    { label: "Call", icon: Phone, className: "text-ink/70 hover:bg-ink/5" },
+    { label: "Message", icon: MessageCircle, className: "text-ink/70 hover:bg-ink/5" },
+    { label: "Invoice", icon: FileText, className: "text-ink/70 hover:bg-ink/5" },
   ];
 
   return (
@@ -50,7 +50,7 @@ export function BookingRowActions({ status }: { status: BookingStatus }) {
               key={label}
               type="button"
               onClick={() => setIsOpen(false)}
-              className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition hover:bg-ink/5 ${className}`}
+              className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition ${className}`}
             >
               <ItemIcon className="size-4" />
               {label}

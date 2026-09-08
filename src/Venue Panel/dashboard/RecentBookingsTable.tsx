@@ -9,7 +9,7 @@ const STATUS_STYLES: Record<BookingStatus, string> = {
 /** "Recent Bookings" — customer / event / date / guests / status table. */
 export function RecentBookingsTable() {
   return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+    <div className="rounded-xl border border-ink/10 bg-white p-5 shadow-sm">
       <h3 className="font-serif text-lg font-semibold text-ink">Recent Bookings</h3>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-[560px] text-left text-sm">

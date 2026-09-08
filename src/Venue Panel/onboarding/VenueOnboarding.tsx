@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BrandButton, BrandOutlineButton } from "@/components/elements/BrandButton";
 import { OnboardingStepper } from "./OnboardingStepper";
 import { StepHallDetails } from "./StepHallDetails";
 import { StepVenueInformation } from "./StepVenueInformation";
@@ -47,17 +46,23 @@ export function VenueOnboarding() {
   };
 
   return (
-    <main className="min-h-dvh bg-[#f7f5f1] px-4 py-10 sm:px-6">
-      <div className="mx-auto w-full max-w-3xl">
-        <Link href="/" className="mb-8 inline-block text-2xl font-bold tracking-tight text-ink">
-          Bandhan<span className="text-brand">.</span>
-        </Link>
+    <main className="min-h-dvh bg-[#f7f5f1] px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <Link href="/" className="text-2xl font-bold tracking-tight text-ink">
+            Bandhan<span className="text-brand">.</span>
+          </Link>
+          <div className="sm:text-right">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand">Set Up Your Venue</p>
+            <h1 className="mt-1 text-2xl font-bold text-ink">Let&apos;s complete your profile</h1>
+          </div>
+        </div>
 
-        <div className="rounded-3xl border border-ink/10 bg-white p-6 shadow-sm sm:p-10">
-          <OnboardingStepper current={step} />
+        <OnboardingStepper current={step} onStepClick={setStep} />
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-ink">{STEP_COPY[step].title}</h2>
+        <div className="rounded-xl border border-ink/10 bg-white p-6 shadow-sm sm:p-10">
+          <div>
+            <h2 className="text-xl font-bold text-ink">{STEP_COPY[step].title}</h2>
             <p className="mt-1 text-sm text-ink/50">{STEP_COPY[step].subtitle}</p>
           </div>
 
@@ -86,19 +91,25 @@ export function VenueOnboarding() {
               <StepHallDetails halls={data.halls} onChange={(halls) => setData({ ...data, halls })} />
             )}
           </div>
+        </div>
 
-          <div className="mt-10 flex items-center justify-between border-t border-ink/10 pt-6">
-            <BrandOutlineButton
-              onClick={() => setStep((s) => Math.max(0, s - 1))}
-              disabled={step === 0}
-              className="disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Back
-            </BrandOutlineButton>
-            <BrandButton onClick={handleContinue} disabled={!canContinue}>
-              {isLastStep ? "Finish onboarding" : "Continue"}
-            </BrandButton>
-          </div>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setStep((s) => Math.max(0, s - 1))}
+            disabled={step === 0}
+            className="rounded-xl border border-ink/15 bg-white px-5 py-2.5 text-sm font-semibold text-ink/70 transition hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={handleContinue}
+            disabled={!canContinue}
+            className="rounded-xl border border-brand bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {isLastStep ? "Complete Onboarding" : "Next"}
+          </button>
         </div>
       </div>
     </main>
